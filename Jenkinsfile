@@ -27,11 +27,9 @@ pipeline {
                 '''
             }
         }
-        stage('Clear up') {
-            steps {
-                sh '''
-                docker system prune
-                '''
+        post {
+            always {
+                sh 'docker system prune'
             }
         }
     }
