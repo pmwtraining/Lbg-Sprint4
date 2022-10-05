@@ -16,14 +16,14 @@ pipeline {
         stage('Tear Down') {
             steps {
                 sh '''
-                docker rm java-appy
+                docker rm java-app
                 '''
             }
         }
         stage('Deploy') {
             steps {
                 sh '''
-                docker run -p 80:8080 --name java-appy java-app:latest
+                docker run -p 80:8080 --name java-app java-app:latest
                 '''
             }
         }
