@@ -20,6 +20,12 @@ public abstract class GameEntity {
 		this.message = message;
 	}
 	
+	public GameEntity() {
+		this.location = new Coordinates();
+		this.gameOver = false;
+		this.message = "Abstract class";
+	}
+	
 	// update location
 	public void updateCoords(int x, int y) {
 		this.location.setX(this.location.getX() + x);

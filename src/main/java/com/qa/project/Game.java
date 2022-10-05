@@ -32,6 +32,10 @@ public class Game {
 		this.entities = new ArrayList<>();
 	}
 	
+	public Game() {
+		super();
+	}
+	
 	// method to generate a GameEntity coordinates
 	public Coordinates generateCoordinates() {
 		Coordinates newCoords = new Coordinates();
