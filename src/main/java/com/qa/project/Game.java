@@ -2,6 +2,8 @@ package com.qa.project;
 
 import java.util.Random;
 
+import com.qa.project.entities.Treasure;
+
 public class Game {
 
 	//scanner
@@ -10,8 +12,7 @@ public class Game {
 	// grid size
 	private int size;
 	
-	// coordinates
-	private Coordinates goal;
+	private Treasure treasure;
 	
 	// grab random
 	private Random rand = new Random();
@@ -22,15 +23,20 @@ public class Game {
 		this.size = size;
 	}
 	
-	// method to generate a goal
-	public Coordinates generateGoal() {
-		Coordinates goal = new Coordinates();
+	// method to generate a GameEntity coordinates
+	public Coordinates generateCoordinates() {
+		Coordinates newCoords = new Coordinates();
 		do {
-			goal.setX(rand.nextInt(size) - (size/2));
-			goal.setY(rand.nextInt(size) - (size/2));
-		} while(goal.getDistance() == 0); // if goal is at start, generate new coordinates
+			newCoords.setX(rand.nextInt(size) - (size/2));
+			newCoords.setY(rand.nextInt(size) - (size/2));
+		} while(newCoords.getDistance() == 0); // if goal is at start, generate new coordinates
 		
-		return goal;
+		return newCoords;
+	}
+	
+	// setup methods
+	public void setup() {
+		this.treasure = new Treasure(this.generateCoordinates());
 	}
 	
 	// method to run the game
@@ -38,11 +44,13 @@ public class Game {
 		do {
 			System.out.println("Game Started");
 			System.out.println("try 'north', 'south', 'east' or 'west'");
-			this.goal = this.generateGoal();
+			
+			this.setup();
+			
 			do {
-				System.out.println("you are '" + this.goal.getDistance() + "' from the goal");
+				System.out.println("you are '" + this.treasure.getDistance() + "' from the goal");
 				this.move();
-			} while( this.goal.getDistance() > 0);// check our distance
+			} while( this.treasure.getDistance() > 0 );// check our distance
 			System.out.println("YOU WON!");
 		} while(this.restart());
 		System.out.println("thanks for playing");
@@ -64,22 +72,22 @@ public class Game {
 			switch(direction) {
 				case("north"):
 					System.out.println("you move north");
-					this.goal.setY(this.goal.getY() - 1);
+					this.treasure.updateCoords(0, -1);
 					validInput = true;
 					break;
 				case("south"):
 					System.out.println("you move south");
-					this.goal.setY(this.goal.getY() + 1);
+					this.treasure.updateCoords(0, +1);
 					validInput = true;
 					break;
 				case("east"):
 					System.out.println("you move east");
-					this.goal.setX(this.goal.getX() - 1);
+					this.treasure.updateCoords(-1, 0);
 					validInput = true;
 					break;
 				case("west"):
 					System.out.println("you move west");
-					this.goal.setX(this.goal.getX() + 1);
+					this.treasure.updateCoords(+1, 0);
 					validInput = true;
 					break;
 				default:
