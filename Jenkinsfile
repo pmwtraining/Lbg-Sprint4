@@ -6,7 +6,7 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('build') {
+        stage('Build') {
             steps {
                 sh '''
                 docker build -t java-app:latest .
