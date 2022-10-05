@@ -13,10 +13,24 @@ pipeline {
                 '''
             }
         }
+        stage('Tear Down') {
+            steps {
+                sh '''
+                docker rm java-appy
+                '''
+            }
+        }
         stage('Deploy') {
             steps {
                 sh '''
                 docker run -p 80:8080 --name java-appy java-app:latest
+                '''
+            }
+        }
+        stage('Clear up') {
+            steps {
+                sh '''
+                docker system prune
                 '''
             }
         }
