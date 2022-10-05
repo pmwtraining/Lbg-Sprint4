@@ -1,10 +1,17 @@
 package com.qa.project;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import com.qa.project.entities.GameEntity;
+import com.qa.project.entities.Monster;
 import com.qa.project.entities.Treasure;
 
 public class Game {
+	
+	// list of game entities
+	private List<GameEntity> entities;
 
 	//scanner
 	private UserInput input;
@@ -21,6 +28,8 @@ public class Game {
 	public Game(UserInput input, int size) {
 		this.input = input;
 		this.size = size;
+		
+		this.entities = new ArrayList<>();
 	}
 	
 	// method to generate a GameEntity coordinates
@@ -37,6 +46,8 @@ public class Game {
 	// setup methods
 	public void setup() {
 		this.treasure = new Treasure(this.generateCoordinates());
+		this.entities.add(treasure);
+		this.entities.add(new Monster(this.generateCoordinates()));
 	}
 	
 	// method to run the game
@@ -50,10 +61,31 @@ public class Game {
 			do {
 				System.out.println("you are '" + this.treasure.getDistance() + "' from the goal");
 				this.move();
-			} while( this.treasure.getDistance() > 0 );// check our distance
-			System.out.println("YOU WON!");
+			} while( !gameOver() ); // I HAVE CHANGED THIS LINE
+
 		} while(this.restart());
 		System.out.println("thanks for playing");
+	}
+	
+	// method to check if game is over
+	private boolean gameOver() {
+		for(GameEntity entity : entities) {
+			// System.out.println(entity.getDistance()); // comment me out later
+			if (entity.getDistance() == 0) {
+				System.out.println(entity.getMessage());
+				if (entity.isGameOver() == true) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	// method to update location of GameEntities
+	private void updateCoords(int x, int y) {
+		for(GameEntity entity : entities) {
+			entity.updateCoords(x, y);
+		}
 	}
 	
 	// method to restart game
@@ -72,22 +104,22 @@ public class Game {
 			switch(direction) {
 				case("north"):
 					System.out.println("you move north");
-					this.treasure.updateCoords(0, -1);
+					this.updateCoords(0, -1);
 					validInput = true;
 					break;
 				case("south"):
 					System.out.println("you move south");
-					this.treasure.updateCoords(0, +1);
+					this.updateCoords(0, +1);
 					validInput = true;
 					break;
 				case("east"):
 					System.out.println("you move east");
-					this.treasure.updateCoords(-1, 0);
+					this.updateCoords(-1, 0);
 					validInput = true;
 					break;
 				case("west"):
 					System.out.println("you move west");
-					this.treasure.updateCoords(+1, 0);
+					this.updateCoords(+1, 0);
 					validInput = true;
 					break;
 				default:
