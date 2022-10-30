@@ -1,4 +1,4 @@
-FROM maven:3.6.0-jdk-11-slim AS build
+FROM arm32v5/maven:3-jdk-11-slim AS build
 
 COPY src /home/app/src
 COPY pom.xml /home/app/pom.xml
